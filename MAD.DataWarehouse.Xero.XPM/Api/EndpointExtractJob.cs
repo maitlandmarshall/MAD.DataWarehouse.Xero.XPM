@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using MIFCore.Hangfire;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -53,13 +54,17 @@ namespace MAD.DataWarehouse.Xero.XPM.Api
             var request = await CreateRequest(endpoint, extractArgs);
             var apiData = await this.ExecuteRequest(endpoint, httpClient, request, extractArgs);
 
-            // If OnPrepareNextRequest returns null, then we're done with this endpoint.
-            var nextRequestData = await endpoint.OnPrepareNextRequest(new PrepareNextRequestArgs(ApiData: apiData));
-            if (nextRequestData == default(IDictionary<string, object>))
-                return;
+            if (endpoint is IPrepareNextRequest prepareNextRequest)
+            {
+                // If OnPrepareNextRequest returns null or an empty dict, then we're done with this endpoint.
+                var nextRequestData = await prepareNextRequest.OnPrepareNextRequest(new PrepareNextRequestArgs(ApiData: apiData, Data: extractArgs?.RequestData.ToImmutableDictionary() ?? ImmutableDictionary<string, object>.Empty));
+                if (nextRequestData == default(IDictionary<string, object>)
+                    || nextRequestData.Keys.Any() == false)
+                    return;
 
-            // Otherwise we need to schedule another job to continue extracting this endpoint.
-            this.backgroundJobClient.Enqueue<EndpointExtractJob>(y => y.Extract(endpoint.Name, new ExtractArgs(nextRequestData, apiData.ParentId)));
+                // Otherwise we need to schedule another job to continue extracting this endpoint.
+                this.backgroundJobClient.Enqueue<EndpointExtractJob>(y => y.Extract(endpoint.Name, new ExtractArgs(nextRequestData, apiData.ParentId)));
+            }
         }
 
         private async Task<ApiData> ExecuteRequest(ApiEndpoint endpoint, HttpClient httpClient, HttpRequestMessage request, ExtractArgs extractArgs = null)
@@ -99,11 +104,15 @@ namespace MAD.DataWarehouse.Xero.XPM.Api
                 request.Headers.Add(h.Key, h.Value);
             }
 
-            // OnPrepareRequest after this system has finished up with the request
-            await endpoint.OnPrepareRequest(new PrepareRequestArgs(request, extractArgs?.NextRequestData));
+            if (endpoint is IPrepareRequest prepareRequest)
+            {
+                // OnPrepareRequest after this system has finished up with the request
+                await prepareRequest.OnPrepareRequest(new PrepareRequestArgs(request, extractArgs?.RequestData.ToImmutableDictionary() ?? ImmutableDictionary<string, object>.Empty));
+            }
+
             return request;
         }
 
-        public record class ExtractArgs(IDictionary<string, object> NextRequestData, int? ParentApiDataId);
+        public record class ExtractArgs(IDictionary<string, object> RequestData, int? ParentApiDataId);
     }
 }

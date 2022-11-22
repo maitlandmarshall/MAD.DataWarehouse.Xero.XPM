@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 
 namespace MAD.DataWarehouse.Xero.XPM.Api
 {
-    internal class ApiEndpoint
+    internal class ApiEndpoint : IPrepareRequest, IPrepareNextRequest
     {
-        public string Name { get; set; }
-        public string JobName { get; set; }
+        public string Name { get; init; }
+        public string JobName { get; init; }
 
-        public string HttpClientName { get; set; }
+        public string HttpClientName { get; init; }
 
         public IDictionary<string, string> AdditionalHeaders { get; } = new Dictionary<string, string>();
 
@@ -18,12 +18,12 @@ namespace MAD.DataWarehouse.Xero.XPM.Api
         public event PrepareRequestDelegate PrepareRequest;
         public event PrepareNextRequestDelegate PrepareNextRequest;
 
-        internal async Task OnPrepareRequest(PrepareRequestArgs args)
+        public virtual async Task OnPrepareRequest(PrepareRequestArgs args)
         {
             await (this.PrepareRequest?.Invoke(args) ?? Task.CompletedTask);
         }
 
-        internal async Task<IDictionary<string, object>> OnPrepareNextRequest(PrepareNextRequestArgs args)
+        public virtual async Task<IDictionary<string, object>> OnPrepareNextRequest(PrepareNextRequestArgs args)
         {
             return await (this.PrepareNextRequest?.Invoke(args) ?? Task.FromResult(default(IDictionary<string, object>)));
         }

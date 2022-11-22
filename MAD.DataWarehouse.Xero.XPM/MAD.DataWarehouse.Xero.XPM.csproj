@@ -29,4 +29,8 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\OAuthB0ner\src\OAuthB0ner.Storage.SqlServer\OAuthB0ner.Storage.SqlServer.csproj" />
+  </ItemGroup>
+
 </Project>

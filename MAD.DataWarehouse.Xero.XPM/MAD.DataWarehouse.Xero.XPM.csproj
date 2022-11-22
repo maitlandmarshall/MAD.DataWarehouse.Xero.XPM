@@ -6,12 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MIFCore" Version="1.0.1" />
-    <PackageReference Include="MIFCore.Hangfire" Version="1.0.2" />
+    <PackageReference Include="MIFCore" Version="1.0.2" />
+    <PackageReference Include="MIFCore.Hangfire" Version="1.1.0" />
+    <PackageReference Include="OAuthB0ner.Storage.SqlServer" Version="6.0.0.11220604" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="settings.Local.json">
+    <None Update="settings.default.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="settings.json">

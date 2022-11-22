@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using MIFCore;
-using MIFCore.Hangfire.Analytics;
 using MIFCore.Http;
-using System;
 
 namespace MAD.DataWarehouse.Xero.XPM
 {
@@ -17,7 +15,6 @@ namespace MAD.DataWarehouse.Xero.XPM
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             IntegrationHost.CreateDefaultBuilder(args)
                 .UseAspNetCore()
-                .UseAppInsights()
                 .UseStartup<Startup>();
     }
 }

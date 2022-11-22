@@ -2,7 +2,7 @@
 
 namespace MAD.DataWarehouse.Xero.XPM.Database
 {
-    internal class ApiData
+    public class ApiData
     {
         public int Id { get; set; }
         public int? ParentId { get; set; }

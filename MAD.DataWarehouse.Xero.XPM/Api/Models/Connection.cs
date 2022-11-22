@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace MAD.DataWarehouse.Xero.XPM.Api
+namespace MAD.DataWarehouse.Xero.XPM.Api.Models
 {
     internal class Connection
     {

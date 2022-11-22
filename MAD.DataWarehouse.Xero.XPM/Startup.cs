@@ -1,4 +1,5 @@
 ﻿using Hangfire;
+using MAD.DataWarehouse.Xero.XPM.Api;
 using MAD.DataWarehouse.Xero.XPM.Database;
 using MAD.DataWarehouse.Xero.XPM.Jobs;
 using Microsoft.EntityFrameworkCore;
@@ -48,7 +49,10 @@ namespace MAD.DataWarehouse.Xero.XPM
                 })
                 .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
 
-            serviceDescriptors.AddScoped<ExtractApiDataJob>();
+            serviceDescriptors.AddScoped<EndpointExtractJob>();
+            serviceDescriptors.AddScoped<ApiEndpointRegisterJob>();
+
+            serviceDescriptors.AddSingleton<ApiEndpointRegister>();
         }
 
         public void Configure(StorageOptions storageOptions)
@@ -64,7 +68,8 @@ namespace MAD.DataWarehouse.Xero.XPM
             using var db = dbContextFactory.CreateDbContext();
             db.Database.Migrate();
 
-            recurringJobManager.AddOrUpdate<ExtractApiDataJob>("CreateRecurringJobs", y => y.CreateRecurringJobs(), Cron.Daily());
+            recurringJobManager.AddOrUpdate<ApiEndpointRegisterJob>("Ensure Endpoints are Registered", y => y.EnsureEndpointsAreRegistered(), Cron.Daily());
+            recurringJobManager.Trigger("Ensure Endpoints are Registered");
         }
     }
 }

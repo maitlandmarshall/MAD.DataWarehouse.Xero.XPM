@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MAD.DataWarehouse.Xero.XPM.Database.Migrations
 {
     [DbContext(typeof(XeroDbContext))]
-    [Migration("20221122082621_InitialCreate")]
+    [Migration("20221123022041_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,13 +24,11 @@ namespace MAD.DataWarehouse.Xero.XPM.Database.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("MAD.DataWarehouse.Xero.XPM.Database.ApiData", b =>
+            modelBuilder.Entity("MIFCore.Hangfire.APIETL.ApiData", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -45,8 +43,8 @@ namespace MAD.DataWarehouse.Xero.XPM.Database.Migrations
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Uri")
                         .IsRequired()
@@ -64,13 +62,11 @@ namespace MAD.DataWarehouse.Xero.XPM.Database.Migrations
                     b.ToTable("ApiData");
                 });
 
-            modelBuilder.Entity("MAD.DataWarehouse.Xero.XPM.Database.ApiData", b =>
+            modelBuilder.Entity("MIFCore.Hangfire.APIETL.ApiData", b =>
                 {
-                    b.HasOne("MAD.DataWarehouse.Xero.XPM.Database.ApiData", "Parent")
+                    b.HasOne("MIFCore.Hangfire.APIETL.ApiData", null)
                         .WithMany()
                         .HasForeignKey("ParentId");
-
-                    b.Navigation("Parent");
                 });
 #pragma warning restore 612, 618
         }

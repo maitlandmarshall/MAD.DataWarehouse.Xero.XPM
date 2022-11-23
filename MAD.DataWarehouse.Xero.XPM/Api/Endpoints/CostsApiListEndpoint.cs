@@ -1,7 +1,7 @@
-﻿using System;
+﻿using MIFCore.Hangfire.APIETL;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -10,18 +10,28 @@ namespace MAD.DataWarehouse.Xero.XPM.Api.Endpoints
     [ApiEndpointName("cost.api/list")]
     internal class CostsApiListEndpoint : IPrepareRequest, IPrepareNextRequest
     {
+        private readonly IHttpClientFactory httpClientFactory;
+
+        public CostsApiListEndpoint(IHttpClientFactory httpClientFactory)
+        {
+            this.httpClientFactory = httpClientFactory;
+        }
+
         public Task OnPrepareRequest(PrepareRequestArgs args)
         {
-            if (args.Data.TryGetValue("page", out var page))
+            if (args.Data.TryGetValue("page", out var page) == false)
             {
-                var queryParams = HttpUtility.ParseQueryString(args.Request.RequestUri.Query);
-                queryParams.Add("page", page.ToString());
-
-                var uriBuilder = new UriBuilder(args.Request.RequestUri);
-                uriBuilder.Query = queryParams.ToString();
-
-                args.Request.RequestUri = uriBuilder.Uri;
+                page = 1;
+                args.Data["page"] = 1;
             }
+
+            var queryParams = HttpUtility.ParseQueryString(args.Request.RequestUri.Query);
+            queryParams.Add("page", page.ToString());
+
+            var uriBuilder = new UriBuilder(args.Request.RequestUri);
+            uriBuilder.Query = queryParams.ToString();
+
+            args.Request.RequestUri = uriBuilder.Uri;
 
             return Task.CompletedTask;
         }
@@ -30,12 +40,15 @@ namespace MAD.DataWarehouse.Xero.XPM.Api.Endpoints
         {
             if (args.ApiData.Data.Contains("<Records>0</Records>") == false)
             {
-                
+                return new Dictionary<string, object>
+                {
+                    { "page", (int)args.Data["page"] + 1 }
+                };
             }
 
             return default(IDictionary<string, object>);
         }
 
-      
+
     }
 }

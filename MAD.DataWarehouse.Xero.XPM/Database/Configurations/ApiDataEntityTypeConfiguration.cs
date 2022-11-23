@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MIFCore.Hangfire.APIETL;
 
 namespace MAD.DataWarehouse.Xero.XPM.Database.Configurations
 {
@@ -20,7 +21,7 @@ namespace MAD.DataWarehouse.Xero.XPM.Database.Configurations
                 .HasDefaultValueSql("SYSDATETIMEOFFSET()");
 
             builder
-                .HasOne(y => y.Parent)
+                .HasOne<ApiData>()
                 .WithMany()
                 .HasForeignKey(y => y.ParentId);
         }

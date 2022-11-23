@@ -13,9 +13,8 @@ namespace MAD.DataWarehouse.Xero.XPM.Database.Migrations
                 name: "ApiData",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ParentId = table.Column<int>(type: "int", nullable: true),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Endpoint = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
                     Uri = table.Column<string>(type: "nvarchar(800)", maxLength: 800, nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),

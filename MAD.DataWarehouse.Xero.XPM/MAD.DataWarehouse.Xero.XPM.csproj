@@ -11,8 +11,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
-    <PackageReference Include="MIFCore" Version="1.0.2" />
-    <PackageReference Include="MIFCore.Hangfire" Version="1.1.0" />
     <PackageReference Include="OAuthB0ner.Storage.SqlServer" Version="6.0.0.11220831" />
   </ItemGroup>
 
@@ -30,7 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\OAuthB0ner\src\OAuthB0ner.Storage.SqlServer\OAuthB0ner.Storage.SqlServer.csproj" />
+    <ProjectReference Include="..\..\MIFCore\MIFCore.Common\MIFCore.Common.csproj" />
+    <ProjectReference Include="..\..\MIFCore\MIFCore.Hangfire.APIETL\MIFCore.Hangfire.APIETL.csproj" />
+    <ProjectReference Include="..\..\MIFCore\MIFCore.Hangfire\MIFCore.Hangfire.csproj" />
+    <ProjectReference Include="..\..\MIFCore\MIFCore\MIFCore.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,11 +1,11 @@
 ﻿using Hangfire;
-using MAD.DataWarehouse.Xero.XPM.Api;
 using MAD.DataWarehouse.Xero.XPM.Database;
 using MAD.DataWarehouse.Xero.XPM.Jobs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MIFCore.Common;
+using MIFCore.Hangfire.APIETL;
 using MIFCore.Settings;
 using OAuthB0ner;
 using OAuthB0ner.Storage;
@@ -49,10 +49,8 @@ namespace MAD.DataWarehouse.Xero.XPM
                 })
                 .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
 
-            serviceDescriptors.AddScoped<EndpointExtractJob>();
             serviceDescriptors.AddScoped<ApiEndpointRegisterJob>();
-
-            serviceDescriptors.AddSingleton<ApiEndpointRegister>();
+            serviceDescriptors.AddEndpoints();
         }
 
         public void Configure(StorageOptions storageOptions)

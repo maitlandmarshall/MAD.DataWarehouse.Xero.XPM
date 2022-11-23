@@ -1,7 +1,6 @@
 ﻿using MIFCore.Hangfire.APIETL;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -10,13 +9,6 @@ namespace MAD.DataWarehouse.Xero.XPM.Api.Endpoints
     [ApiEndpointName("cost.api/list")]
     internal class CostsApiListEndpoint : IPrepareRequest, IPrepareNextRequest
     {
-        private readonly IHttpClientFactory httpClientFactory;
-
-        public CostsApiListEndpoint(IHttpClientFactory httpClientFactory)
-        {
-            this.httpClientFactory = httpClientFactory;
-        }
-
         public Task OnPrepareRequest(PrepareRequestArgs args)
         {
             if (args.Data.TryGetValue("page", out var page) == false)
@@ -46,9 +38,7 @@ namespace MAD.DataWarehouse.Xero.XPM.Api.Endpoints
                 };
             }
 
-            return default(IDictionary<string, object>);
+            return default;
         }
-
-
     }
 }

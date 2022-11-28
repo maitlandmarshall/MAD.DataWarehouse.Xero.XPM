@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MIFCore.Hangfire.APIETL;
+using MIFCore.Hangfire.APIETL.Extract;
 
 namespace MAD.DataWarehouse.Xero.XPM.Database.Configurations
 {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MIFCore.Hangfire.APIETL;
+using MIFCore.Hangfire.APIETL.Extract;
 
 namespace MAD.DataWarehouse.Xero.XPM.Database
 {

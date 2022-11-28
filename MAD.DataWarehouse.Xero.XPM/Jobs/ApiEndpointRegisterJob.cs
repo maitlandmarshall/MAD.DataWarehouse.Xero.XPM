@@ -1,6 +1,6 @@
 ﻿using Hangfire;
 using MIFCore.Hangfire;
-using MIFCore.Hangfire.APIETL;
+using MIFCore.Hangfire.APIETL.Extract;
 using System.Threading.Tasks;
 
 namespace MAD.DataWarehouse.Xero.XPM.Jobs

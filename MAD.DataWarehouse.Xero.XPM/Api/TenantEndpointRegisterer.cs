@@ -1,5 +1,4 @@
-﻿using MAD.DataWarehouse.Xero.XPM.Api.Models;
-using MAD.DataWarehouse.Xero.XPM.Database;
+﻿using MAD.DataWarehouse.Xero.XPM.Database;
 using Microsoft.EntityFrameworkCore;
 using MIFCore.Hangfire.APIETL;
 using System.Collections.Generic;

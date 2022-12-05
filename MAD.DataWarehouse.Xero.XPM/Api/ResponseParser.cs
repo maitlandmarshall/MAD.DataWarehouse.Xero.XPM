@@ -10,8 +10,7 @@ using System.Xml.Linq;
 
 namespace MAD.DataWarehouse.Xero.XPM.Api
 {
-    [ApiEndpoint("cost.api/list")]
-    [ApiEndpoint("category.api/list")]
+    [ApiEndpointSelector(".*")]
     internal class ResponseParser : IParseResponse
     {
         public async Task<IEnumerable<IDictionary<string, object>>> OnParse(ParseResponseArgs args)
@@ -24,7 +23,8 @@ namespace MAD.DataWarehouse.Xero.XPM.Api
             {
                 "cost.api/list" => "Costs",
                 "category.api/list" => "Categories",
-                _ => throw new NotImplementedException()
+                "clientgroup.api/list" => "Groups",
+                "" or _ => throw new NotImplementedException()
             };
 
             var listContainer = (json["Response"] as IDictionary<string, object>)[listProperty] as IDictionary<string, object>;
@@ -32,13 +32,29 @@ namespace MAD.DataWarehouse.Xero.XPM.Api
             if (listContainer != null
                 && listContainer.Any())
             {
-                var costs = (listContainer.First().Value as IEnumerable<object>)
-                    .Cast<IDictionary<string, object>>()
-                    .ToList();
+                // This will either be a list or a single item
+                var firstValue = listContainer.First().Value;
 
-                costs.FlattenGraph();
+                if (firstValue is IEnumerable<object> array)
+                {
+                    var result = array
+                        .Cast<IDictionary<string, object>>()
+                        .ToList();
 
-                return costs;
+                    result.FlattenGraph();
+
+                    return result;
+                }
+                else if (firstValue is ExpandoObject expando)
+                {
+                    expando.FlattenGraph();
+
+                    return new[] { expando };
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
             }
             else
             {

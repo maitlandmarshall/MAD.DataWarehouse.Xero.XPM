@@ -8,6 +8,7 @@ using System.Web;
 namespace MAD.DataWarehouse.Xero.XPM.Api
 {
     [ApiEndpoint("job.api/list")]
+    [ApiEndpoint("invoice.api/list")]
     internal class DatePaginatedEndpoint : IPrepareRequest, IPrepareNextRequest
     {
         public Task OnPrepareRequest(PrepareRequestArgs args)

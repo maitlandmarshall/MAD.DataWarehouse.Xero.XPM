@@ -27,6 +27,7 @@ namespace MAD.DataWarehouse.Xero.XPM.Api
                 "staff.api/list" => "StaffList",
                 "task.api/list" => "TaskList",
                 "job.api/list" => "Jobs",
+                "invoice.api/list" => "Invoices",
                 "" or _ => throw new NotImplementedException()
             };
 

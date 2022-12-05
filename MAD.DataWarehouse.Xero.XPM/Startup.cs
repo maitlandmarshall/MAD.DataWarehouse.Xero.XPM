@@ -12,6 +12,7 @@ using OAuthB0ner;
 using OAuthB0ner.Storage;
 using OAuthB0ner.Storage.SqlServer;
 using System;
+using System.Threading.Tasks;
 
 namespace MAD.DataWarehouse.Xero.XPM
 {
@@ -63,13 +64,13 @@ namespace MAD.DataWarehouse.Xero.XPM
                 throw new XeroSecurityRequirementException("Encryption is required for Xero token storage. Please set the 'oauth:storage:isEncryptionOn' configuration value to 'true'.");
         }
 
-        public void PostConfigure(IRecurringJobManager recurringJobManager, IDbContextFactory<XeroDbContext> dbContextFactory)
+        public async Task PostConfigure(IRecurringJobManager recurringJobManager, IDbContextFactory<XeroDbContext> dbContextFactory, ApiEndpointRegisterJob apiEndpointRegisterJob)
         {
             using var db = dbContextFactory.CreateDbContext();
             db.Database.Migrate();
 
             recurringJobManager.AddOrUpdate<ApiEndpointRegisterJob>("Ensure Endpoints are Registered", y => y.EnsureEndpointsAreRegistered(), Cron.Daily());
-            recurringJobManager.Trigger("Ensure Endpoints are Registered");
+            await apiEndpointRegisterJob.EnsureEndpointsAreRegistered();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MIFCore.Hangfire.APIETL;
 using MIFCore.Hangfire.APIETL.Transform;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -10,20 +11,28 @@ using System.Xml.Linq;
 namespace MAD.DataWarehouse.Xero.XPM.Api
 {
     [ApiEndpoint("cost.api/list")]
+    [ApiEndpoint("category.api/list")]
     internal class ResponseParser : IParseResponse
     {
         public async Task<IEnumerable<IDictionary<string, object>>> OnParse(ParseResponseArgs args)
         {
             var xml = XDocument.Parse(args.ApiData.Data);
             var jsonRaw = JsonConvert.SerializeObject(xml);
-            dynamic json = JsonConvert.DeserializeObject<ExpandoObject>(jsonRaw);
+            var json = JsonConvert.DeserializeObject<ExpandoObject>(jsonRaw) as IDictionary<string, object>;
 
-            var costContainer = json.Response.Costs as IDictionary<string, object>;
-
-            if (costContainer != null
-                && costContainer.Any())
+            var listProperty = args.Endpoint.Name switch
             {
-                var costs = (costContainer["Cost"] as IEnumerable<object>)
+                "cost.api/list" => "Costs",
+                "category.api/list" => "Categories",
+                _ => throw new NotImplementedException()
+            };
+
+            var listContainer = (json["Response"] as IDictionary<string, object>)[listProperty] as IDictionary<string, object>;
+
+            if (listContainer != null
+                && listContainer.Any())
+            {
+                var costs = (listContainer.First().Value as IEnumerable<object>)
                     .Cast<IDictionary<string, object>>()
                     .ToList();
 

@@ -24,6 +24,7 @@ namespace MAD.DataWarehouse.Xero.XPM.Api
                 "cost.api/list" => "Costs",
                 "category.api/list" => "Categories",
                 "clientgroup.api/list" => "Groups",
+                "staff.api/list" => "StaffList",
                 "" or _ => throw new NotImplementedException()
             };
 

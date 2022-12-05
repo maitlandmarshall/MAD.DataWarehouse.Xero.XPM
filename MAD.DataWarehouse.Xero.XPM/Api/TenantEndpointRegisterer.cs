@@ -9,9 +9,6 @@ using System.Net.Http.Json;
 namespace MAD.DataWarehouse.Xero.XPM.Api
 {
     [ApiEndpointSelector(".*")]
-    [ApiEndpoint("category.api/list")]
-    [ApiEndpoint("clientgroup.api/list")]
-    [ApiEndpoint("client.api/list")]
     internal class TenantEndpointRegisterer : IDefineEndpoints
     {
         private readonly IHttpClientFactory httpClientFactory;

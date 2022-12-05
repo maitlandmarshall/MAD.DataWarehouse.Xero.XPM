@@ -2,20 +2,18 @@
 using MAD.DataWarehouse.Xero.XPM.Database;
 using Microsoft.EntityFrameworkCore;
 using MIFCore.Hangfire.APIETL;
-using MIFCore.Hangfire.APIETL.Transform;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
 
-namespace MAD.DataWarehouse.Xero.XPM.Api.Endpoints
+namespace MAD.DataWarehouse.Xero.XPM.Api
 {
     [ApiEndpointSelector(".*")]
     [ApiEndpoint("category.api/list")]
     [ApiEndpoint("clientgroup.api/list")]
     [ApiEndpoint("client.api/list")]
-    internal class TenantEndpointRegisterer : IDefineEndpoints, IHandleResponse
+    internal class TenantEndpointRegisterer : IDefineEndpoints
     {
         private readonly IHttpClientFactory httpClientFactory;
         private readonly IDbContextFactory<XeroDbContext> dbContextFactory;
@@ -31,7 +29,7 @@ namespace MAD.DataWarehouse.Xero.XPM.Api.Endpoints
         {
             if (this.connections is null)
             {
-                var httpClient = this.httpClientFactory.CreateClient("xero");
+                var httpClient = this.httpClientFactory.CreateClient();
                 var connections = await httpClient.GetFromJsonAsync<IEnumerable<Connection>>("https://api.xero.com/connections");
 
                 // Filter for the practice manager connections
@@ -40,7 +38,7 @@ namespace MAD.DataWarehouse.Xero.XPM.Api.Endpoints
 
             foreach (var tenant in this.connections)
             {
-                yield return new ApiEndpoint($"{endpointName} ({tenant.TenantName})", "xero")
+                yield return new ApiEndpoint($"{endpointName} ({tenant.TenantName})")
                 {
                     AdditionalHeaders =
                     {
@@ -50,12 +48,12 @@ namespace MAD.DataWarehouse.Xero.XPM.Api.Endpoints
             }
         }
 
-        public async Task OnHandleResponse(HandleResponseArgs args)
-        {
-            using var db = await this.dbContextFactory.CreateDbContextAsync();
-            db.ApiData.Add(args.ApiData);
+        //public async Task OnHandleResponse(HandleResponseArgs args)
+        //{
+        //    using var db = await this.dbContextFactory.CreateDbContextAsync();
+        //    db.ApiData.Add(args.ApiData);
 
-            await db.SaveChangesAsync();
-        }
+        //    await db.SaveChangesAsync();
+        //}
     }
 }

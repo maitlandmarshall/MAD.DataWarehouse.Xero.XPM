@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace MAD.DataWarehouse.Xero.XPM.Api.Endpoints
+namespace MAD.DataWarehouse.Xero.XPM.Api
 {
     [ApiEndpoint("cost.api/list")]
     internal class PaginatedEndpoint : IPrepareRequest, IPrepareNextRequest

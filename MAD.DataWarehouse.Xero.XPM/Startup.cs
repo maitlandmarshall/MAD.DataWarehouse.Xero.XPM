@@ -44,7 +44,7 @@ namespace MAD.DataWarehouse.Xero.XPM
 
             serviceDescriptors.AddTransient<AuthenticationDelegatingHandler>();
             serviceDescriptors
-                .AddHttpClient("xero", client =>
+                .AddHttpClient(string.Empty, client =>
                 {
                     client.BaseAddress = new Uri("https://api.xero.com/practicemanager/3.1/");
                 })

@@ -1,4 +1,5 @@
-﻿using MIFCore.Hangfire.APIETL.Extract;
+﻿using MIFCore.Hangfire.APIETL;
+using MIFCore.Hangfire.APIETL.Extract;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -6,7 +7,7 @@ using System.Web;
 
 namespace MAD.DataWarehouse.Xero.XPM.Api.Endpoints
 {
-    [ApiEndpointName("cost.api/list")]
+    [ApiEndpoint("cost.api/list")]
     internal class PaginatedEndpoint : IPrepareRequest, IPrepareNextRequest
     {
         public Task OnPrepareRequest(PrepareRequestArgs args)

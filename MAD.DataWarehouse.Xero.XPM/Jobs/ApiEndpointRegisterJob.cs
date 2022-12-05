@@ -1,15 +1,15 @@
 ﻿using Hangfire;
 using MIFCore.Hangfire;
-using MIFCore.Hangfire.APIETL.Extract;
+using MIFCore.Hangfire.APIETL;
 using System.Threading.Tasks;
 
 namespace MAD.DataWarehouse.Xero.XPM.Jobs
 {
     internal class ApiEndpointRegisterJob
     {
-        private readonly ApiEndpointRegister apiEndpointRegister;
+        private readonly IApiEndpointRegister apiEndpointRegister;
 
-        public ApiEndpointRegisterJob(ApiEndpointRegister apiEndpointRegister)
+        public ApiEndpointRegisterJob(IApiEndpointRegister apiEndpointRegister)
         {
             this.apiEndpointRegister = apiEndpointRegister;
         }

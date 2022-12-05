@@ -1,7 +1,8 @@
 ﻿using MAD.DataWarehouse.Xero.XPM.Api.Models;
 using MAD.DataWarehouse.Xero.XPM.Database;
 using Microsoft.EntityFrameworkCore;
-using MIFCore.Hangfire.APIETL.Extract;
+using MIFCore.Hangfire.APIETL;
+using MIFCore.Hangfire.APIETL.Transform;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -11,9 +12,9 @@ using System.Threading.Tasks;
 namespace MAD.DataWarehouse.Xero.XPM.Api.Endpoints
 {
     [ApiEndpointSelector(".*")]
-    [ApiEndpointName("category.api/list")]
-    [ApiEndpointName("clientgroup.api/list")]
-    [ApiEndpointName("client.api/list")]
+    [ApiEndpoint("category.api/list")]
+    [ApiEndpoint("clientgroup.api/list")]
+    [ApiEndpoint("client.api/list")]
     internal class TenantEndpointRegisterer : IDefineEndpoints, IHandleResponse
     {
         private readonly IHttpClientFactory httpClientFactory;

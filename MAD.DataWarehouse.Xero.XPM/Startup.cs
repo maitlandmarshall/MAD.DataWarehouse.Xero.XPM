@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MIFCore.Common;
-using MIFCore.Hangfire.APIETL.Extract;
+using MIFCore.Hangfire.APIETL;
+using MIFCore.Hangfire.APIETL.SqlServer;
 using MIFCore.Settings;
 using OAuthB0ner;
 using OAuthB0ner.Storage;
@@ -51,6 +52,7 @@ namespace MAD.DataWarehouse.Xero.XPM
 
             serviceDescriptors.AddScoped<ApiEndpointRegisterJob>();
             serviceDescriptors.AddApiEndpointsToExtract();
+            serviceDescriptors.AddApiEndpointsSqlServerDestination();
         }
 
         public void Configure(StorageOptions storageOptions)

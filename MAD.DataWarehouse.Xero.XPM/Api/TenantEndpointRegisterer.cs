@@ -29,7 +29,7 @@ namespace MAD.DataWarehouse.Xero.XPM.Api
                 var connections = await httpClient.GetFromJsonAsync<IEnumerable<Connection>>("https://api.xero.com/connections");
 
                 // Filter for the practice manager connections
-                this.connections = connections.Where(y => y.TenantType == "PRACTICEMANAGER");
+                this.connections = connections.Where(y => y.TenantType == "PRACTICEMANAGER").ToList();
             }
 
             foreach (var tenant in this.connections)

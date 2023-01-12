@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MAD.DataWarehouse.Xero.XPM.Api.Models
 {
-    [ApiEndpointModel("job.api/list", InputPath = "Tasks_Task")]
+    [ApiEndpointModel("job.api/list", InputPath = "Tasks")]
     internal class JobTask
     {
         [Key]

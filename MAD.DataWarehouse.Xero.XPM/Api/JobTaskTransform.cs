@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace MAD.DataWarehouse.Xero.XPM.Api
 {
-    [ApiEndpoint("job.api/list", "Tasks_Task")]
+    [ApiEndpoint("job.api/list", "Tasks")]
     internal class JobTaskTransform : ITransformModel
     {
         public Task OnTransformModel(TransformModelArgs args)

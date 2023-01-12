@@ -8,6 +8,7 @@ namespace MAD.DataWarehouse.Xero.XPM.Api
 {
     [ApiEndpoint("job.api/list")]
     [ApiEndpoint("invoice.api/list")]
+    [ApiEndpoint("client.api/list")]
     internal class AddDetailedQueryParamUrl : IPrepareRequest
     {
         public Task OnPrepareRequest(PrepareRequestArgs args)

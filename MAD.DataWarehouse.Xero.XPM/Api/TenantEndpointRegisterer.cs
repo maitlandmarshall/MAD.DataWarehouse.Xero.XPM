@@ -1,6 +1,4 @@
-﻿using MAD.DataWarehouse.Xero.XPM.Database;
-using Microsoft.EntityFrameworkCore;
-using MIFCore.Hangfire.APIETL;
+﻿using MIFCore.Hangfire.APIETL;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -12,13 +10,11 @@ namespace MAD.DataWarehouse.Xero.XPM.Api
     internal class TenantEndpointRegisterer : IDefineEndpoints
     {
         private readonly IHttpClientFactory httpClientFactory;
-        private readonly IDbContextFactory<XeroDbContext> dbContextFactory;
         private IEnumerable<Connection> connections;
 
-        public TenantEndpointRegisterer(IHttpClientFactory httpClientFactory, IDbContextFactory<XeroDbContext> dbContextFactory)
+        public TenantEndpointRegisterer(IHttpClientFactory httpClientFactory)
         {
             this.httpClientFactory = httpClientFactory;
-            this.dbContextFactory = dbContextFactory;
         }
 
         public async IAsyncEnumerable<ApiEndpoint> DefineEndpoints(string endpointName)

@@ -14,7 +14,7 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
 		<PackageReference Include="MIFCore" Version="1.0.2" />
-		<PackageReference Include="MIFCore.Hangfire.APIETL" Version="1.0.0-rev.20231120618" />
+		<PackageReference Include="MIFCore.Hangfire.APIETL" Version="1.0.0-rev.20232200153" />
 		<PackageReference Include="MIFCore.Hangfire.APIETL.SqlServer" Version="1.0.0-rev.20231120409" />
 		<PackageReference Include="OAuthB0ner.Storage.SqlServer" Version="6.0.0.11220831" />
 	</ItemGroup>

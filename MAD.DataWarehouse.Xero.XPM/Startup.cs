@@ -1,4 +1,5 @@
 ﻿using Hangfire;
+using Hangfire.Common;
 using MAD.DataWarehouse.Xero.XPM.Jobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,6 +45,7 @@ namespace MAD.DataWarehouse.Xero.XPM
                 .AddHttpMessageHandler<AuthenticationDelegatingHandler>();
 
             serviceDescriptors.AddScoped<ApiEndpointRegisterJob>();
+
             serviceDescriptors.AddApiEndpointsToExtract();
             serviceDescriptors.AddApiEndpointsSqlServerDestination();
         }
@@ -54,6 +56,8 @@ namespace MAD.DataWarehouse.Xero.XPM
             // https://www.absia.asn.au/industry-standards/addon-security-standard/ABSIA-Security-Standard-for-Add-on-Marketplaces.pdf
             if (storageOptions.IsEncryptionOn == false)
                 throw new XeroSecurityRequirementException("Encryption is required for Xero token storage. Please set the 'oauth:storage:isEncryptionOn' configuration value to 'true'.");
+
+            JobFilterProviders.Providers.Add(new JobFilterProvider());
         }
 
         public async Task PostConfigure(IRecurringJobManager recurringJobManager, ApiEndpointRegisterJob apiEndpointRegisterJob)
